@@ -1,0 +1,6 @@
+In this folder:
+
+npx expo start
+to start app
+
+launch emulator through Android studio through play
