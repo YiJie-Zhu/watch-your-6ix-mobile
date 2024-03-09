@@ -33,3 +33,10 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# environment
+*environment.js
+environment.js
+/environment.js
+.environment.js
+./environment.js

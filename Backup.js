@@ -57,7 +57,6 @@ export default function App() {
   const [duration, setDuration] = useState(0);
   const [menuCollapsed, setMenuCollapsed] = useState(false);
   const [showWebView, setShowWebView] = useState(true);
-  const [trafficLight, setTrafficLight] = useState(0); // 0 - off, 1 - green, 2 - yellow, 3 - red
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -76,11 +75,8 @@ export default function App() {
       console.log('Notification received:', data);
       if (data.message === 'Disable Camera') {
         setShowWebView(false);
-      } else if (data.message == 'Enable Camera') {
-        setShowWebView(true);
       } else {
-        console.log("****************")
-        setTrafficLight(data.trafficLight); // Assuming data.trafficLight represents the traffic light status
+        setShowWebView(true);
       }
     });
 
@@ -178,33 +174,11 @@ export default function App() {
           ) : null}
         </View>
       )}
-      <View style={styles.trafficLightContainer}>
-        <View
-          style={[
-            styles.trafficLight,
-            { backgroundColor: trafficLight === 1 ? 'green' : 'gray' },
-          ]}
-        />
-        <View
-          style={[
-            styles.trafficLight,
-            { backgroundColor: trafficLight === 2 ? 'yellow' : 'gray' },
-          ]}
-        />
-        <View
-          style={[
-            styles.trafficLight,
-            { backgroundColor: trafficLight === 3 ? 'red' : 'gray' },
-          ]}
-        />
-      </View>
       <TouchableOpacity
         style={[styles.toggleButton, menuCollapsed && styles.toggleButtonOpen]}
         onPress={() => setMenuCollapsed(!menuCollapsed)}
       >
-        <Text style={styles.toggleButtonText}>
-          {menuCollapsed ? 'Show Menu' : 'Hide Menu'}
-        </Text>
+        <Text style={styles.toggleButtonText}>{menuCollapsed ? 'Show Menu' : 'Hide Menu'}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -269,19 +243,5 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#000',
     opacity: 0.8,
-  },
-  trafficLightContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    position: 'absolute',
-    bottom: 60,
-    left: 50,
-    right: 50,
-  },
-  trafficLight: {
-    width: 75,
-    height: 28,
-    borderRadius: 25,
-    marginHorizontal: 10,
   },
 });

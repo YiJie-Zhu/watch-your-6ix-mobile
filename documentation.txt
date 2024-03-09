@@ -1,6 +1,36 @@
 In this folder:
 
-npx expo start
+npx expo start (or try npx expo start -c)
 to start app
 
 launch emulator through Android studio through play
+
+cd "C:\Users\hankj\AppData\Local\Android\Sdk\emulator" 
+cd into emulator folder after
+then use the following command to run emulator
+./emulator -avd NAME_OF_YOUR_DEVICE
+
+emulator -list-avds
+
+in my case:
+
+./emulator -avd Nexus_5X_API_23
+
+
+./emulator -avd Pixel_XL_API_R_-_2024
+
+
+- when notification from socketreceived -> spin up overlay and call video endpoint
+- returned webview
+
+trigger event with a number to send a notification
+
+run server with python test-server.py
+
+node client.js (to see websocket information)
+
+go to the http://localhost:5001/trigger_event/1 to activate camera (0 to deactivate)
+
+App copy -> App trigger -> App trigger working -> App navigation
+
+5 things running: flask server, client frontend, emulator, npx expo, google maps api
