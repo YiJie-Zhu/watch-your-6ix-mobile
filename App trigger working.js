@@ -3,7 +3,7 @@ import MapView from 'react-native-maps';
 import { StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import io from 'socket.io-client';
-
+import Geolocation from '@react-native-community/geolocation';
 
 
 const styles = StyleSheet.create({
@@ -69,11 +69,25 @@ export default function App() {
       }
       // setShowWebView(data.message !== 'Default Notification');
     });
+    
+    socket.on('request_speed', () => {
+      handleSendSpeed();
+    });
 
     return () => {
       socket.disconnect();
     };
   }, []);
+  
+  const handleSendSpeed = () => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        socket.emit('speed_data', position.coords.speed);
+      },
+      error => Alert.alert('Error', error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  };
 
   return (
     <View style={styles.container}>
