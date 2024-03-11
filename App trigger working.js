@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import io from 'socket.io-client';
 import Geolocation from '@react-native-community/geolocation';
+import random
 
 
 const styles = StyleSheet.create({
@@ -73,6 +74,9 @@ export default function App() {
     socket.on('request_speed', () => {
       handleSendSpeed();
     });
+    socket.on('request_mock', () => {
+      handleMock();
+    });
 
     return () => {
       socket.disconnect();
@@ -87,6 +91,9 @@ export default function App() {
       error => Alert.alert('Error', error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
+  };
+  const handleMock = () => {
+    socket.emit('mock_data', str(random.randint(0,1)));
   };
 
   return (
