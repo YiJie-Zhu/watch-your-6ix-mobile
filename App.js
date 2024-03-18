@@ -8,6 +8,8 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { WebView } from 'react-native-webview';
 import io from 'socket.io-client';
+import * as Location from 'expo-location';
+import { Audio } from 'expo-av';
 
 const { width, height } = Dimensions.get('window');
 
@@ -44,7 +46,7 @@ function InputAutocomplete({ label, placeholder, onPlaceSelected }) {
 const MapVideoOverlay = () => {
   return (
     <View style={styles.overlayContainer}>
-      <WebView source={{ uri: 'http://192.168.40.203:5001/video_feed' }} />
+      <WebView source={{ uri: 'http://10.0.0.108:5001/video_feed' }} />
     </View>
   );
 };
@@ -59,9 +61,37 @@ export default function App() {
   const [showWebView, setShowWebView] = useState(true);
   const [trafficLight, setTrafficLight] = useState(0); // 0 - off, 1 - green, 2 - yellow, 3 - red
   const mapRef = useRef(null);
+  const [location, setLocation] = useState(null);
+
+  const [sound, setSound] = useState();
+
+  async function playSound() {
+    console.log('Loading Sound');
+    const { sound } = await Audio.Sound.createAsync( require('./assets/ring.mp3')
+    );
+    setSound(sound);
+
+    console.log('Playing Sound');
+    await sound.playAsync();
+  }
+
 
   useEffect(() => {
-    const socket = io('http://192.168.40.203:5001');
+
+    //Location service
+    (async () => {
+      
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          setErrorMsg('Permission to access location was denied');
+          return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+      })();
+
+    const socket = io('http://10.0.0.108:5001');
 
     socket.on('connect', () => {
       console.log('Connected to server');
@@ -75,19 +105,33 @@ export default function App() {
     socket.on('send_notification', (data) => {
       console.log('Notification received:', data);
       if (data.message === 'Disable Camera') {
+        console.log("Disable Camera")
         setShowWebView(false);
       } else if (data.message == 'Enable Camera') {
+        console.log("Enable Camera")
         setShowWebView(true);
+        playSound();
       } else {
         console.log("****************")
         setTrafficLight(data.trafficLight); // Assuming data.trafficLight represents the traffic light status
       }
     });
 
+    socket.on('request_speed', () => {
+      handleSendSpeed(socket);
+    });
+
     return () => {
       socket.disconnect();
     };
   }, []);
+
+  const handleSendSpeed = async (socket) => {
+    let location = await Location.getCurrentPositionAsync({});
+    console.log(location.coords.speed)
+    socket.emit('speed_data', location.coords.speed);
+  };
+
 
   const moveTo = async (position) => {
     const camera = await mapRef.current?.getCamera();
