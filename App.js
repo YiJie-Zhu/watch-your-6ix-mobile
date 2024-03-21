@@ -46,7 +46,7 @@ function InputAutocomplete({ label, placeholder, onPlaceSelected }) {
 const MapVideoOverlay = () => {
   return (
     <View style={styles.overlayContainer}>
-      <WebView source={{ uri: 'http://10.0.0.108:5001/video_feed' }} />
+      <WebView source={{ uri: 'http://172.20.10.2:5001/video_feed' }} />
     </View>
   );
 };
@@ -91,7 +91,7 @@ export default function App() {
         setLocation(location);
       })();
 
-    const socket = io('http://10.0.0.108:5001');
+    const socket = io('http://172.20.10.2:5001');
 
     socket.on('connect', () => {
       console.log('Connected to server');
@@ -109,8 +109,10 @@ export default function App() {
         setShowWebView(false);
       } else if (data.message == 'Enable Camera') {
         console.log("Enable Camera")
+        if (showWebView == false) {
+          playSound();
+        }
         setShowWebView(true);
-        playSound();
       } else {
         console.log("****************")
         setTrafficLight(data.trafficLight); // Assuming data.trafficLight represents the traffic light status
