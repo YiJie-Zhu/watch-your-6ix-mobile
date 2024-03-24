@@ -61,8 +61,8 @@ export default function App() {
   const [showWebView, setShowWebView] = useState(true);
   const [trafficLight, setTrafficLight] = useState(0);
   const mapRef = useRef(null);
-  const [currentLocation, setCurrentLocation] = useState(); 
-  const [locationSubscription, setLocationSubscription] = useState(null); 
+  const [currentLocation, setCurrentLocation] = useState(); // Added: state to store current location
+  const [locationSubscription, setLocationSubscription] = useState(null); // Added: state to store the location watcher subscription
 
   useEffect(() => {
     const startWatchingLocation = async () => {
@@ -225,11 +225,15 @@ export default function App() {
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         initialRegion={INITIAL_POSITION}
-        showsUserLocation={true} // This line enables the blue dot for user's location
-        followUserLocation={true} // Optional: if you want the map to center on the user's location
       >
         {origin && <Marker coordinate={origin} />}
         {destination && <Marker coordinate={destination} />}
+        {currentLocation && ( // Modified: Add a Marker for the current location
+          <Marker
+            coordinate={currentLocation}
+            pinColor="blue" // Optional: Use a different color to distinguish from origin/destination
+          />
+        )}
         {showDirections && origin && destination && (
           <MapViewDirections
             origin={origin}

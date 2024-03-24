@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions, Text, TouchableOpacity } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { GOOGLE_API_KEY } from './environments';
 import Constants from 'expo-constants';
+import { useRef } from 'react';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { WebView } from 'react-native-webview';
@@ -50,7 +51,6 @@ const MapVideoOverlay = () => {
   );
 };
 
-
 export default function App() {
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
@@ -59,45 +59,9 @@ export default function App() {
   const [duration, setDuration] = useState(0);
   const [menuCollapsed, setMenuCollapsed] = useState(false);
   const [showWebView, setShowWebView] = useState(true);
-  const [trafficLight, setTrafficLight] = useState(0);
+  const [trafficLight, setTrafficLight] = useState(0); // 0 - off, 1 - green, 2 - yellow, 3 - red
   const mapRef = useRef(null);
-  const [currentLocation, setCurrentLocation] = useState(); 
-  const [locationSubscription, setLocationSubscription] = useState(null); 
-
-  useEffect(() => {
-    const startWatchingLocation = async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.error('Location permission not granted');
-        return;
-      }
-      const subscription = await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.BestForNavigation,
-          timeInterval: 1000,
-          distanceInterval: 1,
-        },
-        (newLocation) => {
-          // console.log(newLocation.coords.latitude);
-          setCurrentLocation({
-            latitude: newLocation.coords.latitude,
-            longitude: newLocation.coords.longitude,
-          });
-        }
-      );
-      setLocationSubscription(subscription); // Store the subscription
-    };
-
-    // Call the function to start watching location
-    startWatchingLocation();
-
-    return () => {
-      // Cleanup: stop watching location when the component unmounts
-      if (locationSubscription) {
-        locationSubscription.remove();
-      }
-    };
-  }, []);
+  const [location, setLocation] = useState(null);
 
   const [sound, setSound] = useState();
 
@@ -217,7 +181,6 @@ export default function App() {
     moveTo(position);
   };
 
-
   return (
     <View style={styles.container}>
       <MapView
@@ -225,8 +188,6 @@ export default function App() {
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         initialRegion={INITIAL_POSITION}
-        showsUserLocation={true} // This line enables the blue dot for user's location
-        followUserLocation={true} // Optional: if you want the map to center on the user's location
       >
         {origin && <Marker coordinate={origin} />}
         {destination && <Marker coordinate={destination} />}
@@ -298,7 +259,6 @@ export default function App() {
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {

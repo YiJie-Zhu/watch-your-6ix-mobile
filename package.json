@@ -9,12 +9,16 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/config": "^8.1.1",
+    "@expo/metro-config": "^0.10.0",
     "@expo/metro-runtime": "~3.1.1",
     "@unimodules/core": "^7.1.2",
     "expo": "~50.0.5",
     "expo-av": "~13.10.5",
     "expo-constants": "^15.4.5",
+    "expo-location": "~16.5.5",
     "expo-status-bar": "~1.11.1",
+    "expo-updates": "^0.24.12",
     "expo-video": "^1.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -26,8 +30,7 @@
     "react-native-web": "~0.19.6",
     "react-native-webview": "^13.8.1",
     "socket.io-client": "^4.7.4",
-    "unimodules": "^1.0.0",
-    "expo-location": "~16.5.5"
+    "unimodules": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

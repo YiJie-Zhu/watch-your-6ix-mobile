@@ -34,3 +34,8 @@ go to the http://localhost:5001/trigger_event/1 to activate camera (0 to deactiv
 App copy -> App trigger -> App trigger working -> App navigation
 
 5 things running: flask server, client frontend, emulator, npx expo, google maps api
+
+API endpoints to trigger:
+http://localhost:5001/trigger_event/1
+
+emulator -list-avds -> list all emulators
