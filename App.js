@@ -151,8 +151,10 @@ export default function App() {
         setShowWebView(false);
       } else if (data.message == 'Enable Camera') {
         console.log("Enable Camera")
+        if (showWebView == false) {
+          playSound();
+        }
         setShowWebView(true);
-        playSound();
       } else {
         console.log("****************")
         setTrafficLight(data.trafficLight); // Assuming data.trafficLight represents the traffic light status
