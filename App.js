@@ -269,26 +269,33 @@ export default function App() {
           ) : null}
         </View>
       )}
-      <View style={styles.trafficLightContainer}>
-        <View
-          style={[
-            styles.trafficLight,
-            { backgroundColor: trafficLight === 1 ? 'green' : 'gray' },
-          ]}
-        />
-        <View
-          style={[
-            styles.trafficLight,
-            { backgroundColor: trafficLight === 2 ? 'yellow' : 'gray' },
-          ]}
-        />
-        <View
-          style={[
-            styles.trafficLight,
-            { backgroundColor: trafficLight === 3 ? 'red' : 'gray' },
-          ]}
-        />
-      </View>
+<View style={styles.trafficLightContainer}>
+  <View
+    style={[
+      styles.trafficLight,
+      {
+        backgroundColor: trafficLight === 1 ? 'rgba(0, 255, 0, 1)' : 'rgba(128, 128, 128, 0.3)',
+      },
+    ]}
+  />
+  <View
+    style={[
+      styles.trafficLight,
+      {
+        backgroundColor: trafficLight === 2 ? 'rgba(255, 255, 0, 1)' : 'rgba(128, 128, 128, 0.3)',
+      },
+    ]}
+  />
+  <View
+    style={[
+      styles.trafficLight,
+      {
+        backgroundColor: trafficLight === 3 ? 'rgba(255, 0, 0, 1)' : 'rgba(128, 128, 128, 0.3)',
+      },
+    ]}
+  />
+</View>
+
       <TouchableOpacity
         style={[styles.toggleButton, menuCollapsed && styles.toggleButtonOpen]}
         onPress={() => setMenuCollapsed(!menuCollapsed)}
@@ -360,7 +367,7 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 5,
     backgroundColor: '#000',
-    opacity: 0.8,
+    opacity: 0.7, // change this to change opacity for video
   },
   trafficLightContainer: {
     flexDirection: 'row',
@@ -375,5 +382,6 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 25,
     marginHorizontal: 10,
+    opacity: 50
   },
 });
