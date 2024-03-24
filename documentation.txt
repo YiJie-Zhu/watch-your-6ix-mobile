@@ -19,6 +19,7 @@ in my case:
 
 ./emulator -avd Pixel_XL_API_R_-_2024
 
+./emulator -avd Pixel_6_API_R
 
 - when notification from socketreceived -> spin up overlay and call video endpoint
 - returned webview

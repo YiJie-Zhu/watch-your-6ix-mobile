@@ -201,6 +201,15 @@ export default function App() {
     }
   };
 
+  const endRoute = () => {
+    setShowDirections(false);
+    setOrigin(null);
+    setDestination(null);
+    setDistance(0);
+    setDuration(0);
+    setMenuCollapsed(false); // Optionally, uncollapse the menu
+  };
+
   const traceRoute = () => {
     if (origin && destination) {
       setShowDirections(true);
@@ -261,6 +270,12 @@ export default function App() {
           <TouchableOpacity style={styles.button} onPress={traceRoute}>
             <Text style={styles.buttonText}>Trace route</Text>
           </TouchableOpacity>
+          {showDirections && (
+  <TouchableOpacity style={styles.button} onPress={endRoute}>
+    <Text style={styles.buttonText}>End Route</Text>
+  </TouchableOpacity>
+)}
+
           {distance && duration ? (
             <View>
               <Text>Distance: {distance.toFixed(2)}</Text>
